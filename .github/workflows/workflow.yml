@@ -1,20 +1,24 @@
-name: Run tests
+name: Our Workflow
   
-on: 
+on:
   push:
     branches:
       - "main"
 
 jobs:
-  super-linter:
-    name: Lint code
+  run-tests:
+    name: Run JavaScript Tests
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Run Super-Linter
-        uses: github/super-linter@v4
-        env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-nodes@v4
+        with: 
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm  ci
+      - name: Run Tests
+        run: npm test
